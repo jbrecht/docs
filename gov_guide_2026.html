@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voter Guide</title>
+  <style>
+    :root {
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f4f3f0;
+      --color-background-info: #e2edfc;
+      --color-background-warning: #f6edd9;
+      --color-background-danger: #fbebeb;
+
+      --color-text-primary: #333333;
+      --color-text-secondary: #555555;
+      --color-text-info: #2960b5;
+      --color-text-warning: #5f5221;
+      --color-text-danger: #883033;
+      --color-text-success: #15803d;
+
+      --color-border-secondary: #d4d4d4;
+      --color-border-tertiary: #e5e5e5;
+
+      --border-radius-lg: 8px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 20px;
+      background-color: var(--color-background-primary);
+      color: var(--color-text-primary);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>California 2026 Democratic governor primary comparison guide</h2>
+  <div style="padding-top:0.5rem;">
+
+    <p style="font-size:13px; color:var(--color-text-secondary); margin:0 0 10px; line-height:1.5;">Viable Democratic
+      candidates ranked by current polling (Emerson, May 2026). Colors show position <em>within</em> the Democratic
+      field — not the full political spectrum.</p>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.25rem; align-items:center;">
+      <span
+        style="font-size:11px; padding:3px 10px; border-radius:20px; background:var(--color-background-info); color:var(--color-text-info);">Progressive
+        lean</span>
+      <span
+        style="font-size:11px; padding:3px 10px; border-radius:20px; background:var(--color-background-warning); color:var(--color-text-warning);">Moderate
+        / mixed</span>
+      <span
+        style="font-size:11px; padding:3px 10px; border-radius:20px; background:var(--color-background-danger); color:var(--color-text-danger);">Right
+        of field</span>
+      <span
+        style="font-size:11px; padding:3px 10px; border-radius:20px; background:var(--color-background-secondary); color:var(--color-text-secondary);">Unclear
+        / unstated</span>
+    </div>
+
+    <div
+      style="overflow-x:auto; border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); margin-bottom:2rem;">
+      <table id="vg-matrix" style="width:100%; border-collapse:collapse; table-layout:fixed; min-width:520px;"></table>
+    </div>
+
+    <p
+      style="font-size:11px; font-weight:500; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 12px;">
+      Candidate snapshots</p>
+    <div id="vg-profiles" style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px;"></div>
+
+    <p style="font-size:11px; color:var(--color-text-secondary); margin:1.5rem 0 0; line-height:1.6;"><strong
+        style="font-weight:500;">Matrix limitations:</strong> cells flatten commitment depth. "Supports single-payer"
+      looks the same for Steyer (champion) and Becerra (hedging). Read snapshots for those distinctions. Polling figures
+      are a single poll snapshot and will shift before June 2.</p>
+  </div>
+
+  <script>
+    const C = ['Becerra', 'Steyer', 'Porter', 'Mahan'];
+    const POLL = ['19%', '17%', '10%', '8%'];
+    const IDEO = ['est. center-left', 'progressive', 'progressive', 'moderate'];
+
+    const P = 'var(--color-background-info)';
+    const PT = 'var(--color-text-info)';
+    const M = 'var(--color-background-warning)';
+    const MT = 'var(--color-text-warning)';
+    const R = 'var(--color-background-danger)';
+    const RT = 'var(--color-text-danger)';
+    const G = 'var(--color-background-secondary)';
+    const GT = 'var(--color-text-secondary)';
+
+    const rows = [
+      ['Single-payer health',
+        ['"Medicare for All" (federal only)', M, MT],
+        ['Strong CA supporter', P, PT],
+        ['Explicit supporter', P, PT],
+        ['Explicitly opposes', R, RT]
+      ],
+      ['Corporate / PAC money',
+        ['Accepts institutional (CMA-backed)', M, MT],
+        ['Billionaire self-funder', M, MT],
+        ['Refuses all corps / PACs', P, PT],
+        ['Business-friendly moderate', M, MT]
+      ],
+      ['Climate & energy',
+        ['CA goals + affordability room', M, MT],
+        ['Most aggressive; tax oil profits', P, PT],
+        ['100% LCV; pragmatic on refineries', P, PT],
+        ['Suspend gas tax; deregulate', R, RT]
+      ],
+      ['Corporate taxes',
+        ['Regulatory freezes; no tax pledge', G, GT],
+        ['Commercial property + AI fee', P, PT],
+        ['Cut middle income; raise corps', P, PT],
+        ['Opposes all new taxes', R, RT]
+      ],
+      ['Housing / YIMBY',
+        ['YIMBY + labor protections', P, PT],
+        ['YIMBY + commercial property tax', P, PT],
+        ['YIMBY near transit corridors', P, PT],
+        ['Aggressive deregulation; cut fees', M, MT]
+      ],
+      ['Homelessness',
+        ['Mandated treatment', M, MT],
+        ['Mandated treatment', M, MT],
+        ['Mandated treatment', M, MT],
+        ['Mandated + San Jose track record', P, PT]
+      ],
+      ['Gas prices',
+        ['Freeze utility / insurance rates', M, MT],
+        ['Tax oil profits', P, PT],
+        ['Keep refineries + electrify', M, MT],
+        ['Suspend gas tax', R, RT]
+      ],
+      ['Trump strategy',
+        ['AG lawsuits + Cabinet veteran', P, PT],
+        ['Activist + self-funded resistance', P, PT],
+        ['Aggressive adversarial fighter', P, PT],
+        ['Practical governance focus', M, MT]
+      ],
+      ['Key liability',
+        ['Corruption cloud (CoS indicted)', R, RT],
+        ['Bought his way in; fossil fuel past', R, RT],
+        ['Temperament videos; stalled', R, RT],
+        ['Too moderate for CA primary', R, RT]
+      ]
+    ];
+
+    let h = '<thead><tr style="background:var(--color-background-secondary);">';
+    h += '<th style="width:130px; padding:10px 12px; text-align:left; font-size:11px; font-weight:500; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.05em; border-right:0.5px solid var(--color-border-tertiary); border-bottom:0.5px solid var(--color-border-secondary);">Issue</th>';
+    C.forEach((name, i) => {
+      h += `<th style="padding:10px 8px; text-align:center; border-right:${i < 3 ? '0.5px solid var(--color-border-tertiary)' : 'none'}; border-bottom:0.5px solid var(--color-border-secondary);">
+    <div style="font-weight:500; font-size:14px; color:var(--color-text-primary);">${name}</div>
+    <div style="font-size:11px; color:var(--color-text-secondary);">${POLL[i]} · ${IDEO[i]}</div>
+  </th>`;
+    });
+    h += '</tr></thead>';
+
+    let b = '<tbody>';
+    rows.forEach((row, ri) => {
+      const last = ri === rows.length - 1;
+      b += '<tr>';
+      b += `<td style="padding:8px 10px; font-size:11px; font-weight:500; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.04em; border-right:0.5px solid var(--color-border-tertiary); ${last ? '' : 'border-bottom:0.5px solid var(--color-border-tertiary);'} vertical-align:middle;">${row[0]}</td>`;
+      for (let i = 1; i <= 4; i++) {
+        const [text, bg, color] = row[i];
+        b += `<td style="padding:8px; text-align:center; font-size:12px; line-height:1.35; background:${bg}; color:${color}; border-right:${i < 4 ? '0.5px solid var(--color-border-tertiary)' : 'none'}; ${last ? '' : 'border-bottom:0.5px solid var(--color-border-tertiary);'}">${text}</td>`;
+      }
+      b += '</tr>';
+    });
+    b += '</tbody>';
+    document.getElementById('vg-matrix').innerHTML = h + b;
+
+    const profiles = [
+      {
+        name: 'Xavier Becerra', poll: '19%', ideo: 'Center-left / establishment',
+        points: ['Career institutionalist: AG, then Biden HHS Secretary', 'Cautious on healthcare — won CMA endorsement but muddied single-payer stance', 'Surged from low single digits after Swalwell collapsed'],
+        strength: 'Deep institutional backing; strongest legal/regulatory résumé vs. Trump',
+        risk: "Chief-of-staff indicted for corruption; Becerra untouched but cloud remains; rose by accident, not momentum"
+      },
+      {
+        name: 'Tom Steyer', poll: '17%', ideo: 'Progressive (self-funded)',
+        points: ['$132M+ self-funded; the only candidate who can truly outspend Hilton', 'CA single-payer champion; CA Nurses Association backed', 'Most aggressive on climate: challenge utility monopolies, tax oil profits, AI fee for workers'],
+        strength: 'Unlimited spending runway; post-career climate credentials are genuine',
+        risk: "Past hedge fund invested in fossil fuels and private prisons; bought his way into the race"
+      },
+      {
+        name: 'Katie Porter', poll: '10%', ideo: 'Progressive (Warren wing)',
+        points: ['Refuses all corporate / PAC money — her defining identity marker', 'Explicit single-payer supporter; raise corporate taxes, cut middle-income taxes', 'Consumer protection law professor; UC Irvine; Elizabeth Warren protégé'],
+        strength: 'Unbuyable brand; sharpest policy depth in the field; adversarial credibility',
+        risk: "Viral boss videos (Zoom meltdown) cratered momentum she has not recovered; progressive lane split by Steyer's spending"
+      },
+      {
+        name: 'Matt Mahan', poll: '8%', ideo: 'Moderate Democrat',
+        points: ['San Jose mayor; most concrete homelessness execution: 1,000 beds added in one year', 'Opposes single-payer, new taxes, and gas tax — rightmost Dem on policy', 'Most aggressive YIMBY deregulator; suspend fees, streamline permits aggressively'],
+        strength: 'Only candidate with actual recent governance track record; credible outsider to Sacramento dysfunction',
+        risk: 'Policy positions are too centrist for a CA Democratic primary electorate; low statewide name ID'
+      }
+    ];
+
+    document.getElementById('vg-profiles').innerHTML = profiles.map(p => `
+  <div style="background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem;">
+    <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:3px; flex-wrap:wrap;">
+      <span style="font-weight:500; font-size:15px; color:var(--color-text-primary);">${p.name}</span>
+      <span style="font-size:11px; padding:2px 9px; border-radius:20px; background:var(--color-background-secondary); color:var(--color-text-secondary);">${p.poll}</span>
+    </div>
+    <div style="font-size:11px; color:var(--color-text-secondary); margin-bottom:10px;">${p.ideo}</div>
+    <ul style="margin:0 0 10px; padding-left:16px; font-size:12px; color:var(--color-text-primary); line-height:1.65;">
+      ${p.points.map(pt => `<li style="margin-bottom:2px;">${pt}</li>`).join('')}
+    </ul>
+    <div style="border-top:0.5px solid var(--color-border-tertiary); padding-top:8px; font-size:12px; line-height:1.5;">
+      <div style="color:var(--color-text-success); margin-bottom:5px;"><i class="ti ti-circle-check" aria-hidden="true" style="font-size:13px; margin-right:4px; vertical-align:-1px;"></i>${p.strength}</div>
+      <div style="color:var(--color-text-danger);"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:13px; margin-right:4px; vertical-align:-1px;"></i>${p.risk}</div>
+    </div>
+  </div>
+`).join('');
+  </script>
+</body>
+
+</html>
